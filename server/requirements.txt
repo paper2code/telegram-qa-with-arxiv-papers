@@ -2,3 +2,4 @@ numpy
 pandas
 git+https://github.com/deepset-ai/haystack.git
 flask
+telebot
