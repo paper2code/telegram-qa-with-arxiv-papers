@@ -1,5 +1,7 @@
 numpy
 pandas
-git+https://github.com/deepset-ai/haystack.git
+# git+https://github.com/deepset-ai/haystack.git
+farm-haystack
 flask
 pyTelegramBotAPI==3.7.3
+tqdm

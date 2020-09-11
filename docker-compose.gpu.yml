@@ -11,6 +11,8 @@ services:
     networks:
     - internal
     - web
+    depends_on:
+    - elastic
     volumes:
     - arxiv-data:/opt/data
     - ./server:/opt/service
@@ -29,9 +31,8 @@ services:
     command: ["cp", "-n", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json", "."]
 
   elastic:
-    image: blacktop/elasticsearch:7.8
+    image: elasticsearch:7.6.2
     container_name: ${NAMESPACE}-elastic
-    hostname: elastic
     networks:
     - internal
     ports:

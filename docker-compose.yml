@@ -11,6 +11,8 @@ services:
     networks:
     - internal
     - web
+    depends_on:
+    - elastic
     volumes:
     - arxiv-data:/opt/data
     ports:

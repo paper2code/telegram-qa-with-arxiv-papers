@@ -7,6 +7,12 @@ Created on Fri Sept 11 13:23:10 2020
 import os
 import json
 
+import click
+
+import tqdm
+import numpy as np  # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
 import telebot
 from telebot import types
 
@@ -50,12 +56,18 @@ def send_text(message):
         bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
         # bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIBkl6pr4kVOGisB5LUX54w8USsN6hWAAL5AANWnb0KlWVuqyorGzYZBA')
 
+
+
 data  = []
-with open("../data/arxiv-metadata-oai.json", 'r') as f:
-    for line in f:
-        data.append(json.loads(line))
+with tqdm.tqdm(total=os.path.getsize("../data/arxiv-metadata-oai.json")) as pbar:
+    with open("../data/arxiv-metadata-oai.json", 'r') as f:
+        for line in f:
+            # pbar.update(f.tell() - pbar.n)
+            pbar.update(len(line))
+            data.append(json.loads(line))
 
 data = pd.DataFrame(data)
+
 
 document_store = ElasticsearchDocumentStore(host="elastic", username="", password="", index="arxiv-qa")
 document_store.write_documents(data[['title', 'abstract']].rename(columns={'title':'name','abstract':'text'}).to_dict(orient='records'))
@@ -89,6 +101,12 @@ def webhook():
     bot.set_webhook(url="https://paper2code.com/qa/?token=" + TELEGRAM_TOKEN)
     return "!", 200
 
-if "__main__"==__name__:
-    app.run(host='0.0.0.0', port=int(os.environ.get('SERVER_PORT', 5006)))
+@click.command()
+@click.option("--host", default="0.0.0.0", help="Server host.")
+@click.option("--port", default="5006", help="The person to greet.")
+def server(host, port):
+    """Run the paper2code arXiv-QA server."""
+    app.run(host=host, port=port)
 
+if __name__ == '__main__':
+    server()
