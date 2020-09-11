@@ -6,7 +6,7 @@ services:
     image: paper2code/arxiv-qa:latest
     container_name: ${NAMESPACE}-server
     build:
-      context: .
+      context: ./server
       dockerfile: Dockerfile
     ports:
     - 5006:5006
@@ -16,8 +16,8 @@ services:
     image: paper2code/gsutil:4.9-alpine3.12
     container_name: ${NAMESPACE}-gsutil
     build:
-      context: .
-      dockerfile: Dockerfile.gsutil
+      context: ./gsutil
+      dockerfile: Dockerfile
     volumes:
     - arxiv-data:/opt/data
     command: ["cp", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json"]

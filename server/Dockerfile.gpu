@@ -20,7 +20,7 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt/service
 COPY requirements.txt /opt/service
-COPY server/main.py /opt/service/server.py
+COPY main.py /opt/service/server.py
 WORKDIR /opt/service
 
 RUN pip3 install --upgrade pip

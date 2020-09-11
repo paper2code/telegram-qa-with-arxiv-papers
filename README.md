@@ -1,8 +1,13 @@
-# telegram-qa-with-arxiv-papers
+# Telegram QA with arXiv papers - Paper2code
 
 ## Introduction
 We will build a neural question and answering system using `transformers` models (`RoBERTa`). This approach is capable to perform Q&A across millions of documents in few seconds.
 ![alt text](docs/huggingface.png "Huggingface")
+
+## Quick start
+
+### Docker
+For starting telegram-qa-with-arxiv-papers services with docker, please follow this [link](./docs/DOCKER.md).
 
 ## Data
 For this tutorial, I will use ArXiV's research papers abstracts to do Q&A. The data is on Kaggle. [Go to dataset](https://www.kaggle.com/Cornell-University/arxiv). The dataset has many columns like 
