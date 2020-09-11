@@ -45,14 +45,19 @@ vim .env
 ```
 
 ### Import arXiv metadata
-First of all, you need to import the arXiv dataset. For doing so, you'll have to execute the following command:
-
-```sh
+```
 $ docker-compose run arxiv-meta
 ```
 
 ### Start the server
-For starting the flask server and the telegram bot, please execute:
+For starting the flask server and the telegram bot, depending on your favourite mode, please execute:
+
+### CPU mode
 ```sh
-$ docker-compose up arxiv-qa
+$ docker-compose up -d arxiv-qa
+```
+
+### GPU mode
+```sh
+$ docker-compose -f docker-compose.gpu.yml up -d arxiv-qa
 ```
