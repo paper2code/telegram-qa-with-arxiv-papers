@@ -3,7 +3,7 @@ version: '3.8'
 services:
  
   arxiv-qa:
-    image: paper2code/arxiv-qa:latest
+    image: paper2code/arxiv-qa:cpu-latest
     container_name: ${NAMESPACE}-server
     build:
       context: ./server

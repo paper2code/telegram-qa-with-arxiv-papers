@@ -54,10 +54,12 @@ For starting the flask server and the telegram bot, depending on your favourite 
 
 ### CPU mode
 ```sh
+$ docker-compose build arxiv-qa
 $ docker-compose up -d arxiv-qa
 ```
 
 ### GPU mode
 ```sh
+$ docker-compose -f docker-compose.gpu.yml build arxiv-qa
 $ docker-compose -f docker-compose.gpu.yml up -d arxiv-qa
 ```
