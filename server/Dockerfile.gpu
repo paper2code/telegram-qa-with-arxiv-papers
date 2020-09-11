@@ -24,10 +24,10 @@ COPY requirements.txt .
 RUN pip3 install --upgrade pip && \
     pip3 install -r requirements.txt
 
-COPY main.py server.py
+COPY main.py main.py
 COPY data.py data.py
 
 RUN python3 -c 'import torch; print(torch.cuda.is_available())'
 
-ENTRYPOINT ["python3", "./server.py"]
+ENTRYPOINT ["python3", "main.py"]
 

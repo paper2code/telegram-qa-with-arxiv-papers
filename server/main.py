@@ -8,6 +8,8 @@ import os
 import json
 
 import telebot
+from telebot import types
+
 from data import get_stats, get_image_link
 
 from flask import Flask, jsonify, request
@@ -27,12 +29,12 @@ options = {'Question': 'Ask a question', 'Statistics': 'Statistics of the curren
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
-keyboard1 = telebot.types.ReplyKeyboardMarkup()
-keyboard1.row(options['Question'], options['Statistics'])
+keyboard = types.ReplyKeyboardMarkup()
+keyboard.row(options['Question'], options['Statistics'])
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    bot.send_message(message.chat.id, 'Please choose an option', reply_markup=keyboard1)
+    bot.send_message(message.chat.id, 'Please choose an option', reply_markup=keyboard)
 
 @bot.message_handler(content_types=['text'])
 def send_text(message):

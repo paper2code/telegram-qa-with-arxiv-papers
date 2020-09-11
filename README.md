@@ -1,5 +1,7 @@
 # Telegram QA with arXiv papers - Paper2code
 
+[![Open  In  Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github.com/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
+
 ## Introduction
 We will build a neural question and answering system using `transformers` models (`RoBERTa`). This approach is capable to perform Q&A across millions of documents in few seconds.
 ![alt text](docs/huggingface.png "Huggingface")

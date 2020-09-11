@@ -13,9 +13,10 @@ services:
     - web
     volumes:
     - arxiv-data:/opt/data
+    - ./server:/opt/service
     ports:
     - 5006:5006
-    command: ["python3", "server.py"]
+    command: ["python3", "main.py"]
 
   arxiv-meta:
     image: paper2code/gsutil:4.9-alpine3.12
