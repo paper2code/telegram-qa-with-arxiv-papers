@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 MAINTAINER paper2code <contact@paper2code.com>
 
 RUN apt-get update && \
@@ -13,7 +13,10 @@ RUN apt-get update && \
     libxrender-dev \
     libxext6 \
     libsm6 \
-    openssl
+    openssl \
+    nano \
+    bash \
+    git
 
 RUN mkdir -p /opt/service
 COPY requirements.txt /opt/service
@@ -22,6 +25,7 @@ WORKDIR /opt/service
 
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
+RUN python3 -c 'import torch; print(torch.cuda.is_available())'
 
 ENTRYPOINT ["python3", "./server.py"]
 
