@@ -8,6 +8,11 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - arxiv-data:/opt/data
     ports:
     - 5006:5006
     command: ["python3", "server.py"]
@@ -20,7 +25,7 @@ services:
       dockerfile: Dockerfile
     volumes:
     - arxiv-data:/opt/data
-    command: ["cp", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json"]
+    command: ["cp", "-n", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json", "."]
 
   elastic:
     image: blacktop/elasticsearch:7.8
