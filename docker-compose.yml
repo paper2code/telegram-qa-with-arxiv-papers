@@ -17,7 +17,7 @@ services:
     - 5006:5006
     command: ["python3", "server.py"]
 
-  gsutil:
+  arxiv-meta:
     image: paper2code/gsutil:4.9-alpine3.12
     container_name: ${NAMESPACE}-gsutil
     build:
