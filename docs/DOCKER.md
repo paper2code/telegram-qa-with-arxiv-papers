@@ -6,12 +6,13 @@ If you don't have Docker/Docker-Compose check **Setup Docker** section
 <details>
 <summary><b>Setup Docker</b></summary>
 <p>
-## Docker
-MacOS: <a href="https://docs.docker.com/docker-for-mac/install/"> https://docs.docker.com/docker-for-mac/install/ </a>
-Linux: <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/"> https://docs.docker.com/install/linux/docker-ce/ubuntu/ </a>
-
-## Docker Compose
-Linux: <a href="https://docs.docker.com/compose/install/"> https://docs.docker.com/compose/install/ </a>
+<h3>Docker</h3>
+MacOS:&nbsp;<a href="https://docs.docker.com/docker-for-mac/install/">https://docs.docker.com/docker-for-mac/install/</a><br />
+Linux:&nbsp;<a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">https://docs.docker.com/install/linux/docker-ce/ubuntu/</a><br />
+<hr />
+<h3>Docker Compose</h3>
+Linux:&nbsp;<a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a><br />
+<br />
 </p>
 </details>
 

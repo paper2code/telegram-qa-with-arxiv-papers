@@ -11,7 +11,6 @@ We will build a neural question and answering system using `transformers` models
 git clone --depth=1 https://github.com/paper2code/telegram-qa-with-arxiv-papers
 cd telegram-qa-with-arxiv-papers
 mv .env-example .env
-vim .env
 ```
 
 ### Docker
