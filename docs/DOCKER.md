@@ -17,7 +17,7 @@ Linux: <a href="https://docs.docker.com/compose/install/"> https://docs.docker.c
 
 ## Quick start
 
-### Clone the repositry
+### Clone the repository
 ```sh
 git clone --depth=1 https://github.com/paper2code/telegram-qa-with-arxiv-papers
 cd telegram-qa-with-arxiv-papers
