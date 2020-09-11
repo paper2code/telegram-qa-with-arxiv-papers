@@ -13,6 +13,8 @@ services:
     - web
     depends_on:
     - elastic
+    environment:
+    - TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
     volumes:
     - arxiv-data:/opt/data
     - ./server:/opt/service

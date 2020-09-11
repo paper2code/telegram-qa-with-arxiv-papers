@@ -56,25 +56,20 @@ def send_text(message):
         bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
         # bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIBkl6pr4kVOGisB5LUX54w8USsN6hWAAL5AANWnb0KlWVuqyorGzYZBA')
 
-
-
-data  = []
-with tqdm.tqdm(total=os.path.getsize("../data/arxiv-metadata-oai.json")) as pbar:
-    with open("../data/arxiv-metadata-oai.json", 'r') as f:
-        for line in f:
-            # pbar.update(f.tell() - pbar.n)
-            pbar.update(len(line))
-            data.append(json.loads(line))
-
-data = pd.DataFrame(data)
-
-
 document_store = ElasticsearchDocumentStore(host="elastic", username="", password="", index="arxiv-qa")
-document_store.write_documents(data[['title', 'abstract']].rename(columns={'title':'name','abstract':'text'}).to_dict(orient='records'))
+
+def train(input_file='../data/arxiv-metadata-oai.json'):
+    data  = []
+    with tqdm.tqdm(total=os.path.getsize(input_file)) as pbar:
+        with open(input_file, 'r') as f:
+            for line in f:
+                pbar.update(len(line))
+                data.append(json.loads(line))
+    data = pd.DataFrame(data)
+    document_store.write_documents(data[['title', 'abstract']].rename(columns={'title':'name','abstract':'text'}).to_dict(orient='records'))
 
 retriever = ElasticsearchRetriever(document_store=document_store)
 reader = FARMReader(model_name_or_path="deepset/roberta-base-squad2", use_gpu=True, context_window_size=500)
-
 finder = Finder(reader, retriever)
 
 app = Flask(__name__)
@@ -98,7 +93,7 @@ def getMessage():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url="https://paper2code.com/qa/?token=" + TELEGRAM_TOKEN)
+    bot.set_webhook(url="https://paper2code.com/qa?token=" + TELEGRAM_TOKEN)
     return "!", 200
 
 @click.command()
