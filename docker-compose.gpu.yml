@@ -1,0 +1,60 @@
+---
+version: '3.8'
+services:
+ 
+  arxiv-qa:
+    image: paper2code/arxiv-qa:latest
+    container_name: ${NAMESPACE}-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile.gpu
+    networks:
+    - internal
+    - web
+    volumes:
+    - arxiv-data:/opt/data
+    ports:
+    - 5006:5006
+    command: ["python3", "server.py"]
+
+  arxiv-meta:
+    image: paper2code/gsutil:4.9-alpine3.12
+    container_name: ${NAMESPACE}-gsutil
+    build:
+      context: ./gsutil
+      dockerfile: Dockerfile
+    volumes:
+    - arxiv-data:/opt/data
+    command: ["cp", "-n", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json", "."]
+
+  elastic:
+    image: blacktop/elasticsearch:7.8
+    container_name: ${NAMESPACE}-elastic
+    hostname: elastic
+    networks:
+    - internal
+    ports:
+    - 9200:9200
+    environment:
+    - discovery.type=single-node
+    volumes:
+    - es-data:/usr/share/elasticsearch/data
+    ulimits:
+      nproc: 65535
+      nofile:
+         soft: 65535
+         hard: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    external: true
+
+volumes:
+  arxiv-data:
+  es-data:

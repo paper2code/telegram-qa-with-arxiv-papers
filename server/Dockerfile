@@ -13,15 +13,17 @@ RUN apt-get update && \
     libxrender-dev \
     libxext6 \
     libsm6 \
-    openssl
+    openssl \
+    git
 
-RUN mkdir -p /opt/service
-COPY requirements.txt /opt/service
-COPY main.py /opt/service/server.py
 WORKDIR /opt/service
+COPY requirements.txt .
 
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install --upgrade pip && \
+    pip3 install -r requirements.txt
+
+COPY main.py server.py
+COPY data.py data.py
 
 ENTRYPOINT ["python3", "./server.py"]
 

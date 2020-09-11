@@ -16,6 +16,20 @@ Linux:&nbsp;<a href="https://docs.docker.com/compose/install/">https://docs.dock
 </p>
 </details>
 
+### Docker-Compose with Nvidia support
+There is a hack for making your gpu(s) available with docker-compose, for doing so, you will have to add the following to your /etc/docker/daemon.json file:
+```json
+{
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
+```
+
 ## Quick start
 
 ### Clone the repository
