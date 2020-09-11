@@ -1,0 +1,17 @@
+name: Paper2Code arXiv-QA - Workflow
+on: [push]
+
+jobs:
+  build:
+    name: Paper2Code arXiv-QA - Workflow
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/master
+      - name: Colab Badge Action 
+        uses: trsvchn/colab-badge-action@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          check: 'all'
+          update: true
+          target_branch: master
+          target_repository: paper2code/telegram-qa-with-arxiv-papers
