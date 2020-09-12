@@ -36,8 +36,8 @@ def get_answer(message):
     answers = requests.get('http://arxiv-qa:5018/query?question='+message.text).json()
     for answer in answers:
         logger.info('Send answer to %s(%s): %s', message.from_user.first_name, message.from_user.username, answer['answer'])
-        bot.send_message(message.chat.id, answer['answer'])
-        bot.send_message(message.chat.id, answer['context'])
+        bot.send_message(message.chat.id, "Answer: "+ answer['answer'])
+        bot.send_message(message.chat.id, "Context: "+ answer['context'])
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -47,7 +47,7 @@ def start_message(message):
 def send_text(message):
     if message.text.lower() == options['Question'].lower():
         echo = bot.send_message(chat_id=message.chat.id,
-                               text='What word would you want me to extract, sir?')
+                               text='What would you want me to answer from arxiv knowledge base, sir?')
         bot.register_next_step_handler(message=echo, callback=get_answer)
     else:
         bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
