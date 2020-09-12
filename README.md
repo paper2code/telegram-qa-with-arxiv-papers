@@ -5,7 +5,7 @@
 
 ## Introduction
 We will build a neural question and answering system using `transformers` models (`RoBERTa`). This approach is capable to perform Q&A across millions of documents in few seconds.
-![alt text](docs/huggingace_telegram.png "Huggingface feat telegram")
+![Logo](docs/huggingace_telegram.png "Huggingface feat telegram")
 
 ## Quick start
 
