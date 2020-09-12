@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 .env
-server/mlruns
-server/mlruns/
-server/mlruns/*
-server/mlruns/**
+services/server/mlruns
+services/server/mlruns/
+services/server/mlruns/*
+services/server/mlruns/**
