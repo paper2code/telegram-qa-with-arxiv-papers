@@ -68,7 +68,7 @@ app = Flask(__name__)
 @app.route('/query')
 def query():
     question = request.args.get('question')
-    prediction = finder.get_answers(question=question, top_k_retriever=10, top_k_reader=2)
+    prediction = finder.get_answers(question=question, top_k_retriever=20, top_k_reader=1)
     result = filter_answers(prediction, details="minimal")
     app.logger.info('question: %s', question)
     app.logger.info('result: %s', result)

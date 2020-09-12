@@ -10,24 +10,34 @@ import json
 import logging
 from logging.handlers import RotatingFileHandler
 
-import click
-
 import telebot
 from telebot import types
 import requests
 
-options = {'Question': 'Ask a question', 'Statistics': 'Statistics of the current db'}
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+handler = RotatingFileHandler('../logs/arxiv-tg.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+logger.addHandler(handler)
+
+options = {'Question': 'Ask a question'}
 
 TELEGRAM_ID_ADMIN = os.getenv('TELEGRAM_ID_ADMIN')
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
 keyboard = types.ReplyKeyboardMarkup()
-keyboard.row(options['Question'], options['Statistics'])
+keyboard.row(options['Question'])
 
-def get_answer(q):
-    answers = requests.get('http://arxiv-qa:5018/query?question='+q).json()
-    return answers
+def get_answer(message):
+    answers = requests.get('http://arxiv-qa:5018/query?question='+message.text).json()
+    for answer in answers:
+        logger.info('Send answer to %s(%s): %s', message.from_user.first_name, message.from_user.username, answer['answer'])
+        bot.send_message(message.chat.id, answer['answer'])
+        bot.send_message(message.chat.id, answer['context'])
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -36,22 +46,11 @@ def start_message(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     if message.text.lower() == options['Question'].lower():
-        # bot.send_message(message.chat.id, 'Processing...')
-        answers = get_answer(message.text)
-        for answer in answers:
-            print(answer['context'])
-            bot.send_message(message.chat.id, answer['context'])
-    # elif message.text.lower() == options['Statistics'].lower():
-    #     bot.send_message(message.chat.id, 'Processing...')
-    #     bot.send_message(message.chat.id, get_stats(), parse_mode="Markdown")
-    # elif message.text.lower() == options['Languages'].lower():
-    #     bot.send_message(message.chat.id, 'Processing...')
-    #     bot.send_photo(message.chat.id, get_image_link())
-    # elif message.text.lower() == options['URL'].lower():
-    #     bot.send_message(message.chat.id, f'Site URL - https://paper2code.com')
+        echo = bot.send_message(chat_id=message.chat.id,
+                               text='What word would you want me to extract, sir?')
+        bot.register_next_step_handler(message=echo, callback=get_answer)
     else:
         bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
-        # bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIBkl6pr4kVOGisB5LUX54w8USsN6hWAAL5AANWnb0KlWVuqyorGzYZBA')
 
 if __name__ == '__main__':
     try:

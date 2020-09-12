@@ -15,6 +15,7 @@ services:
     volumes:
     - arxiv-data:/opt/data
     - ./services/server:/opt/service
+    - ./shared/logs:/opt/logs
     command: ["--train"]
 
   arxiv-qa:
@@ -42,6 +43,7 @@ services:
     - internal
     volumes:
     - ./services/telegram:/opt/service
+    - ./shared/logs:/opt/logs
     command: ["python3", "server.py"]
 
   arxiv-meta:
