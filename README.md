@@ -1,6 +1,6 @@
 # Telegram QA with ArXiV papers - Paper2code
 
-[![Open  In  Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github.com/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
+[![Open  In  Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
 
 ## Introduction
 We will build a neural question and answering system using `transformers` models (`RoBERTa`). This approach is capable to perform Q&A across millions of documents in few seconds.
@@ -313,7 +313,7 @@ The results are promising. Please note that we have used a pretrained model `dee
 ## Notebooks
 - [Go to Dataset](https://www.kaggle.com/Cornell-University/arxiv)
 - [Go to Published Kaggle Kernel](https://www.kaggle.com/officialshivanandroy/question-answering-with-arxiv-papers-at-scale)
-- [Go to Google Colab Playground](https://colab.research.google.com/github.com/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
+- [Go to Google Colab Playground](https://colab.research.google.com/github/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
 
 ## Social Links
 - [Go to Paper2Code's Website](https://paper2code.com)
