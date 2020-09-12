@@ -19,6 +19,17 @@ mv .env-example .env
 ### Docker
 For starting `telegram-qa-with-arxiv-papers` services with docker, please follow this [link](./docs/DOCKER.md).
 
+### Create a Telegram Bot and get you chat ID
+If you want to receive the summaries on Telegram you will need to create a bot. In order to do this:
+
+1. Open the Telegram app and look for **@BotFather**
+2. Type `/start` in order to start the conversation with this bot
+3. Now let's type `/newbot` for creating your own bot
+4. Choose an appropriate name and type it
+5. Done! You will now get a message with your token for accessing via the HTTP API your bot. Keep this token safe, you will need it later on
+6. Now access your bot, typing the name specified at step 4 and type /start
+7. For retrieving your Chat ID please follow the first answer in [this StackOverflow thread](https://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id)
+ 
 ## Data
 For this tutorial, I will use ArXiV's research papers abstracts to do Q&A. The data is on Kaggle. [Go to dataset](https://www.kaggle.com/Cornell-University/arxiv). The dataset has many columns like 
 - `id`
