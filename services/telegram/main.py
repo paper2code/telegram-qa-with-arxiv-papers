@@ -32,9 +32,19 @@ bot = telebot.TeleBot(TELEGRAM_TOKEN)
 keyboard = types.ReplyKeyboardMarkup()
 keyboard.row(options['Question'])
 
+def dedup(answers):
+    seen = set()
+    filtered_answers = []
+    for d in answers:
+        t = tuple(d.items())
+        if t not in seen:
+            seen.add(t)
+            filtered_answers.append(d)
+    return filtered_answers
+
 def get_answer(message):
     answers = requests.get('http://arxiv-qa:5018/query?question='+message.text).json()
-    for answer in answers:
+    for answer in dedup(answers):
         logger.info('Send answer to %s(%s): %s', message.from_user.first_name, message.from_user.username, answer['answer'])
         bot.send_message(message.chat.id, "Answer: "+ answer['answer'])
         bot.send_message(message.chat.id, "Context: "+ answer['context'])
