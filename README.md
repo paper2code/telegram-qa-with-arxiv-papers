@@ -316,6 +316,9 @@ The results are promising. Please note that we have used a pretrained model `dee
 - [Go to Published Kaggle Kernel](https://www.kaggle.com/officialshivanandroy/question-answering-with-arxiv-papers-at-scale)
 - [Go to Google Colab Playground](https://colab.research.google.com/github/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/colab-question-answering-with-arxiv-papers-at-scale.ipynb)
 
-## Social Links
+## Links
 - [Go to Paper2Code's Website](https://paper2code.com)
 - [Go to Paper2Code's Twitter](https://twitter.com/paper2code)
+
+## Credits
+- [Go to Shivanand Roy Blog Post](https://shivanandroy.com/transformers-building-question-answers-model-at-scale/)
