@@ -34,9 +34,12 @@ services:
     container_name: ${NAMESPACE}-telegram
     environment:
     - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    - TELEGRAM_ID_ADMIN=${TELEGRAM_ID_ADMIN}
     build:
       context: ./services/telegram
       dockerfile: Dockerfile
+    networks:
+    - internal
     volumes:
     - ./services/telegram:/opt/service
     command: ["python3", "server.py"]

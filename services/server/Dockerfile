@@ -25,5 +25,9 @@ RUN pip3 install --upgrade pip && \
 COPY main.py server.py
 COPY data.py data.py
 
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    PYTHONDONTWRITEBYTECODE=1
+
 ENTRYPOINT ["python3", "./server.py"]
 
