@@ -43,23 +43,31 @@ cd telegram-qa-with-arxiv-papers
 mv .env-example .env
 vim .env
 ```
+- Modify the `TELEGRAM_API` variable with your api key.
+- Modify the `SERVER_PORT` variable to whatever you want/need (default: 5018)
 
 ### Import arXiv metadata
 ```
 $ docker-compose run arxiv-meta
 ```
 
-### Start the server
+### Start the server and telegram bot
 For starting the flask server and the telegram bot, depending on your favourite mode, please execute:
 
-### CPU mode
+#### CPU mode
 ```sh
 $ docker-compose build arxiv-qa
-$ docker-compose up -d arxiv-qa
+$ docker-compose up -d elasticsearch  # start elasticsearch server
+$ docker-compose run arxiv-train      # train the ArXiV-QA model (will take ~20-30minutes)
+$ docker-compose up -d arxiv-qa       # run the server
+$ docker-compose up -d arxiv-tg       # run the telegram bot
 ```
 
-### GPU mode
+#### GPU mode
 ```sh
-$ docker-compose -f docker-compose.gpu.yml build arxiv-qa
-$ docker-compose -f docker-compose.gpu.yml up -d arxiv-qa
+$ docker-compose -f docker-compose.gpu.yml build arxiv-qa    
+$ docker-compose -f docker-compose.gpu.yml up -d elasticsearch  # start elasticsearch server
+$ docker-compose -f docker-compose.gpu.yml run arxiv-train      # train the ArXiV-QA model (will take ~20-30minutes)
+$ docker-compose -f docker-compose.gpu.yml up -d arxiv-qa       # run the server
+$ docker-compose -f docker-compose.gpu.yml up -d arxiv-tg       # run the telegram bot
 ```
