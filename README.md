@@ -1,4 +1,4 @@
-# Telegram QA with arXiv papers - Paper2code
+# Telegram QA with ArXiV papers - Paper2code
 
 [![Open  In  Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github.com/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
 
@@ -16,7 +16,7 @@ mv .env-example .env
 ```
 
 ### Docker
-For starting telegram-qa-with-arxiv-papers services with docker, please follow this [link](./docs/DOCKER.md).
+For starting `telegram-qa-with-arxiv-papers` services with docker, please follow this [link](./docs/DOCKER.md).
 
 ## Data
 For this tutorial, I will use ArXiV's research papers abstracts to do Q&A. The data is on Kaggle. [Go to dataset](https://www.kaggle.com/Cornell-University/arxiv). The dataset has many columns like 
@@ -313,3 +313,8 @@ The results are promising. Please note that we have used a pretrained model `dee
 ## Notebooks
 - [Go to Dataset](https://www.kaggle.com/Cornell-University/arxiv)
 - [Go to Published Kaggle Kernel](https://www.kaggle.com/officialshivanandroy/question-answering-with-arxiv-papers-at-scale)
+- [Go to Google Colab Playground](https://colab.research.google.com/github.com/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/question-answering-with-arxiv-papers-at-scale.ipynb)
+
+## Social Links
+- [Go to Paper2Code's Website](https://paper2code.com)
+- [Go to Paper2Code's Twitter](https://twitter.com/paper2code)
