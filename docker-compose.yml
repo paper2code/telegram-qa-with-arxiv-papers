@@ -2,27 +2,35 @@
 version: '3.8'
 services:
  
-  arxiv-qa:
+  arxiv-train:  &arxiv_base
     image: paper2code/arxiv-qa:cpu-latest
-    container_name: ${NAMESPACE}-server
+    container_name: ${NAMESPACE}-train
     build:
       context: ./server
       dockerfile: Dockerfile
+    depends_on:
+    - elasticsearch
+    networks:
+    - internal
+    volumes:
+    - arxiv-data:/opt/data
+    - ./server:/opt/service
+    command: ["--train"]
+
+  arxiv-qa:
+    <<: *arxiv_base
+    container_name: ${NAMESPACE}-server
+    environment:
+    - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
     networks:
     - internal
     - web
-    depends_on:
-    - elastic
-    environment:
-    - TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
-    volumes:
-    - arxiv-data:/opt/data
     ports:
-    - 5006:5006
-    command: ["python3", "server.py"]
+    - 5018:5018
+    command: ["--port", "5018", "--host", "0.0.0.0"]
 
   arxiv-meta:
-    image: paper2code/gsutil:4.9-alpine3.12
+    image: paper2code/gsutil:ubuntu-18.04
     container_name: ${NAMESPACE}-gsutil
     build:
       context: ./gsutil

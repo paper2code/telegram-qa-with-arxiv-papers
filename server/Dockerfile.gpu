@@ -29,5 +29,8 @@ COPY data.py data.py
 
 RUN python3 -c 'import torch; print(torch.cuda.is_available())'
 
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
 ENTRYPOINT ["python3", "main.py"]
 

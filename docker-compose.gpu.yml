@@ -2,25 +2,32 @@
 version: '3.8'
 services:
  
-  arxiv-qa:
+  arxiv-train:  &arxiv_base
     image: paper2code/arxiv-qa:gpu-latest
-    container_name: ${NAMESPACE}-server
+    container_name: ${NAMESPACE}-train
     build:
       context: ./server
       dockerfile: Dockerfile.gpu
+    depends_on:
+    - elasticsearch
     networks:
     - internal
-    - web
-    depends_on:
-    - elastic
-    environment:
-    - TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
     volumes:
     - arxiv-data:/opt/data
     - ./server:/opt/service
+    command: ["--train"]
+
+  arxiv-qa:
+    <<: *arxiv_base
+    container_name: ${NAMESPACE}-server
+    environment:
+    - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    networks:
+    - internal
+    - web
     ports:
-    - 5006:5006
-    command: ["python3", "main.py"]
+    - 5018:5018
+    command: ["--port", "5018", "--host", "0.0.0.0"]
 
   arxiv-meta:
     image: paper2code/gsutil:4.9-alpine3.12
@@ -32,13 +39,13 @@ services:
     - arxiv-data:/opt/data
     command: ["cp", "-n", "gs://arxiv-dataset/metadata-v5/arxiv-metadata-oai.json", "."]
 
-  elastic:
+  elasticsearch:
     image: elasticsearch:7.6.2
-    container_name: ${NAMESPACE}-elastic
+    container_name: ${NAMESPACE}-elasticsearch
     networks:
     - internal
-    ports:
-    - 9200:9200
+    # ports:
+    # - 9200:9200
     environment:
     - discovery.type=single-node
     volumes:

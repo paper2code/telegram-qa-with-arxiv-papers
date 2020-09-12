@@ -7,3 +7,11 @@ docker-compose.yml
 *.md
 *.pyc
 *.pyo
+server/mlruns
+server/mlruns/
+server/mlruns/*
+server/mlruns/**
+server/__pycache__
+server/__pycache__/
+server/__pycache__/*
+server/__pycache__/**

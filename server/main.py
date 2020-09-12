@@ -7,6 +7,9 @@ Created on Fri Sept 11 13:23:10 2020
 import os
 import json
 
+import logging
+from logging.handlers import RotatingFileHandler
+
 import click
 
 import tqdm
@@ -56,9 +59,10 @@ def send_text(message):
         bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
         # bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIBkl6pr4kVOGisB5LUX54w8USsN6hWAAL5AANWnb0KlWVuqyorGzYZBA')
 
-document_store = ElasticsearchDocumentStore(host="elastic", username="", password="", index="arxiv-qa")
+document_store = ElasticsearchDocumentStore(host="elasticsearch", username="", password="", index="arxiv-qa")
 
-def train(input_file='../data/arxiv-metadata-oai.json'):
+def train_model(input_file='../data/arxiv-metadata-oai.json'):
+    print("training the model...")
     data  = []
     with tqdm.tqdm(total=os.path.getsize(input_file)) as pbar:
         with open(input_file, 'r') as f:
@@ -82,8 +86,11 @@ app = Flask(__name__)
 def query():
     question = request.args.get('question')
     prediction = finder.get_answers(question=question, top_k_retriever=10, top_k_reader=2)
-    result = print_answers(prediction, details="minimal")
-    return jsonify(result)
+    # app.logger.info('prediction: %s', prediction)
+    # result = print_answers(prediction, details="minimal")
+    app.logger.info('question: %s', question)
+    # app.logger.info('result: %s', result)
+    return jsonify(prediction)
 
 @app.route('/' + TELEGRAM_TOKEN, methods=['POST'])
 def getMessage():
@@ -98,10 +105,16 @@ def webhook():
 
 @click.command()
 @click.option("--host", default="0.0.0.0", help="Server host.")
-@click.option("--port", default="5006", help="The person to greet.")
-def server(host, port):
+@click.option("--port", default="5006", help="Server port.")
+@click.option("--train", default=False, is_flag=True, help="Train the model.")
+def service(host, port, train):
     """Run the paper2code arXiv-QA server."""
+    if train:
+        train_model()
+    handler = RotatingFileHandler('arxiv-qa.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
     app.run(host=host, port=port)
 
 if __name__ == '__main__':
-    server()
+    service()
