@@ -16,11 +16,6 @@ import tqdm
 import numpy as np  # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
-import telebot
-from telebot import types
-
-from data import get_stats, get_image_link
-
 from flask import Flask, jsonify, request
 
 from haystack import Finder
@@ -33,33 +28,25 @@ from haystack.utils import print_answers
 from haystack.database.elasticsearch import ElasticsearchDocumentStore
 from haystack.retriever.sparse import ElasticsearchRetriever
 
-options = {'Question': 'Ask a question', 'Statistics': 'Statistics of the current db'}
-
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-bot = telebot.TeleBot(TELEGRAM_TOKEN)
-
-keyboard = types.ReplyKeyboardMarkup()
-keyboard.row(options['Question'], options['Statistics'])
-
-@bot.message_handler(commands=['start'])
-def start_message(message):
-    bot.send_message(message.chat.id, 'Please choose an option', reply_markup=keyboard)
-
-@bot.message_handler(content_types=['text'])
-def send_text(message):
-    if message.text.lower() == options['Statistics'].lower():
-        bot.send_message(message.chat.id, 'Processing...')
-        bot.send_message(message.chat.id, get_stats(), parse_mode="Markdown")
-    elif message.text.lower() == options['Languages'].lower():
-        bot.send_message(message.chat.id, 'Processing...')
-        bot.send_photo(message.chat.id, get_image_link())
-    elif message.text.lower() == options['URL'].lower():
-        bot.send_message(message.chat.id, f'Site URL - https://paper2code.com')
-    else:
-        bot.send_message(message.chat.id, 'Sorry, I did not understand this command')
-        # bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIBkl6pr4kVOGisB5LUX54w8USsN6hWAAL5AANWnb0KlWVuqyorGzYZBA')
-
 document_store = ElasticsearchDocumentStore(host="elasticsearch", username="", password="", index="arxiv-qa")
+
+def filter_answers(results: dict, details: str = "all"):
+    answers = results["answers"]
+    if details != "all":
+        if details == "minimal":
+            keys_to_keep = set(["answer", "context"])
+        elif details == "medium":
+            keys_to_keep = set(["answer", "context", "score"])
+        else:
+            keys_to_keep = answers.keys()
+
+        # filter the results
+        filtered_answers = []
+        for ans in answers:
+            filtered_answers.append({k: ans[k] for k in keys_to_keep})
+        return filtered_answers
+    else:
+        return results
 
 def train_model(input_file='../data/arxiv-metadata-oai.json'):
     print("training the model...")
@@ -78,30 +65,14 @@ finder = Finder(reader, retriever)
 
 app = Flask(__name__)
 
-# Local
-# bot.remove_webhook()
-# bot.polling(none_stop=True)
-
 @app.route('/query')
 def query():
     question = request.args.get('question')
     prediction = finder.get_answers(question=question, top_k_retriever=10, top_k_reader=2)
-    # app.logger.info('prediction: %s', prediction)
-    # result = print_answers(prediction, details="minimal")
+    result = filter_answers(prediction, details="minimal")
     app.logger.info('question: %s', question)
-    # app.logger.info('result: %s', result)
-    return jsonify(prediction)
-
-@app.route('/' + TELEGRAM_TOKEN, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return '!', 200
-
-@app.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url="https://paper2code.com/qa?token=" + TELEGRAM_TOKEN)
-    return "!", 200
+    app.logger.info('result: %s', result)
+    return jsonify(result)
 
 @click.command()
 @click.option("--host", default="0.0.0.0", help="Server host.")
@@ -111,7 +82,7 @@ def service(host, port, train):
     """Run the paper2code arXiv-QA server."""
     if train:
         train_model()
-    handler = RotatingFileHandler('arxiv-qa.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('../logs/arxiv-qa.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
     app.run(host=host, port=port)

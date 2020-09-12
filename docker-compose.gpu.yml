@@ -6,7 +6,7 @@ services:
     image: paper2code/arxiv-qa:gpu-latest
     container_name: ${NAMESPACE}-train
     build:
-      context: ./server
+      context: ./services/server
       dockerfile: Dockerfile.gpu
     depends_on:
     - elasticsearch
@@ -14,7 +14,7 @@ services:
     - internal
     volumes:
     - arxiv-data:/opt/data
-    - ./server:/opt/service
+    - ./services/server:/opt/service
     command: ["--train"]
 
   arxiv-qa:
@@ -29,11 +29,23 @@ services:
     - 5018:5018
     command: ["--port", "5018", "--host", "0.0.0.0"]
 
+  arxiv-tg:
+    image: paper2code/arxiv-tg:latest-py3-slim
+    container_name: ${NAMESPACE}-telegram
+    environment:
+    - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    build:
+      context: ./services/telegram
+      dockerfile: Dockerfile
+    volumes:
+    - ./services/telegram:/opt/service
+    command: ["python3", "server.py"]
+
   arxiv-meta:
     image: paper2code/gsutil:4.9-alpine3.12
     container_name: ${NAMESPACE}-gsutil
     build:
-      context: ./gsutil
+      context: ./services/gsutil
       dockerfile: Dockerfile
     volumes:
     - arxiv-data:/opt/data
@@ -44,8 +56,6 @@ services:
     container_name: ${NAMESPACE}-elasticsearch
     networks:
     - internal
-    # ports:
-    # - 9200:9200
     environment:
     - discovery.type=single-node
     volumes:
