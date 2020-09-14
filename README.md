@@ -2,7 +2,7 @@
 
 [![Open  In  Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/paper2code/telegram-qa-with-arxiv-papers/blob/master/notebooks/colab-question-answering-with-arxiv-papers-at-scale.ipynb)
 [![Open In Telegram](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/arxivqa_bot)
-[![Quick Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=We%20have%20released%20a%20small%20telegram%20bot%20for%20QA%20with%20the%20latest%20ArXiV%20metadata%20dump.%20Contributions%20are%20welcomed.%0A%0AGithub%3A%20https%3A%2F%2Fgithub.com%2Fpaper2code%2Ftelegram-qa-with-arxiv-papers%20&via=paper2code&hashtags=TelegramBot,telegram,python3,docker,DockerCompose,nlp,qa,transformers,,jupyter,notebook,flask,arxiv,haystack)
+[![Quick Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=We%20have%20released%20a%20small%20telegram%20bot%20for%20QA%20with%20the%20latest%20ArXiV%20metadata%20dump.%20Contribs%20are%20welcomed.%0A%0AGithub%3A%20https%3A%2F%2Fgithub.com%2Fpaper2code%2Ftelegram-qa-with-arxiv-papers%20&via=paper2code&hashtags=TelegramBot,telegram,python3,docker,DockerCompose,nlp,qa,transformers,jupyter,notebook,flask,arxiv,haystack)
 
 ## Introduction
 We will build a neural question and answering system using `transformers` models (`RoBERTa`). This approach is capable to perform Q&A across millions of documents in few seconds.
